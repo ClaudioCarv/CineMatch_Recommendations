@@ -9,14 +9,13 @@ API_URL = os.getenv('API_URL')
 
 
 
-if "filme_input" not in st.session_state:
-    st.session_state.filme_input = ""
+if "filme_selecionado" not in st.session_state:
+    st.session_state.filme_selecionado = ""
 
-def atualizar_input():
-    st.session_state.filme_input = st.session_state.input_filme
 
 filme = st.text_input(
     'Digite aqui o filme: ',
+    value=st.session_state.filme_selecionado,
     key="input_filme"
 )
 
@@ -35,7 +34,7 @@ if filme and len(filme) >= 2:
 
         for sug in sugestoes:
             if st.button(sug, key=f"sug_{sug}"):
-                st.session_state.filme_input = sug
+                st.session_state.filme_selecionado = sug
                 st.rerun()
 
 if st.button('Recomendar'):
