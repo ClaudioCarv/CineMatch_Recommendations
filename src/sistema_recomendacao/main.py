@@ -31,7 +31,7 @@ def recomendar(filme):
         }
 
 def sugerir_texto(texto):
-    filtro = df[df[df['original_title'].str.contains(texto, case=False, na=False)]]
+    filtro = df[df['original_title'].str.contains(texto, case=False, na=False)]
     resultados = filtro['original_title'].head(5).tolist()
 
     return resultados

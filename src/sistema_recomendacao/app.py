@@ -11,12 +11,14 @@ API_URL = os.getenv('API_URL')
 
 filme = st.text_input('Digite aqui um filme:', placeholder="Ex: Avengers, Batman...")
 
-if filme:
-    sugestoes = requests.get(f"{API_URL}/sugestoes?filme={filme}").json()
+if filme and len >= 2:
+    try:
+        sugerir = requests.get(f"{API_URL}/sugerir?filme={filme}").json()
+    except:
+        sugerir = []
 
-    if sugestoes:
-        opcao = st.selectbox("Você quis dizer:", sugestoes)
-        filme = opcao
+    if sugerir:
+        filme = st.selectbox('Sugestões: ', sugerir)
 
 
 if st.button('Recomendar'):
@@ -34,7 +36,7 @@ if st.button('Recomendar'):
                 st.stop()
         
 
-            if isinstance(dados, dict) and 'erro' in dados:
+            if 'erro' in dados:
                 st.warning(['erro'])
                 st.info("💡 Dica: tente nomes em inglês ou mais curtos")
                 st.stop()
