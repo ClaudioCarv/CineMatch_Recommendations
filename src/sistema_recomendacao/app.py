@@ -18,19 +18,19 @@ filme = st.text_input(
     key="input_filme"
 )
 
-sugerir = []
+sugestoes = []
 
 
 if filme and len(filme) >= 2:
     try:
-        resposta = requests.get(f"{API_URL}/sugerir?filme={filme}").json()
-        sugerir = resposta.json()
+        resposta = requests.get(f"{API_URL}/sugestoes?filme={filme}")
+        sugestoes = resposta.json()
     except:
-        sugerir = []
+        sugestoes = []
 
-    if sugerir:
+    if sugestoes:
         st.write('Sugestões: ')
-        for sug in sugerir:
+        for sug in sugestoes:
             if st.button(sug):
                 st.session_state.filme_input = sug
                 st.rerun()
@@ -52,7 +52,7 @@ if st.button('Recomendar'):
         
 
             if 'erro' in dados:
-                st.warning(['erro'])
+                st.warning(dados['erro'])
                 st.info("💡 Dica: tente nomes em inglês ou mais curtos")
                 st.stop()
 

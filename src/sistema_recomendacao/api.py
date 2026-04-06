@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from src.sistema_recomendacao.main import recomendar
-from src.sistema_recomendacao.main import sugerir_texto
+from src.sistema_recomendacao.main import sugerir
 
 app = FastAPI()
 
@@ -9,6 +9,6 @@ def recomendar_api(filme: str):
     return recomendar(filme)
 
 
-@app.get('/sugerir')
-def sugerir(filme:str):
-    return sugerir_texto(filme)
+@app.get('/sugestoes')
+def sugerir_api(filme:str):
+    return sugerir(filme)
