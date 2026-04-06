@@ -17,9 +17,7 @@ def atualizar_input():
 
 filme = st.text_input(
     'Digite aqui o filme: ',
-    value=st.session_state.filme_input,
-    key="input_filme",
-    on_change=atualizar_input
+    key="input_filme"
 )
 
 sugestoes = []
@@ -36,7 +34,7 @@ if filme and len(filme) >= 2:
         st.markdown("### 🔍 Sugestões")
 
         for sug in sugestoes:
-            if st.button(f"🎬 {sug}", key=f"sug_{sug}"):
+            if st.button(sug, key=f"sug_{sug}"):
                 st.session_state.filme_input = sug
                 st.rerun()
 
