@@ -11,7 +11,7 @@ API_URL = os.getenv('API_URL')
 
 filme = st.text_input('Digite aqui um filme:', placeholder="Ex: Avengers, Batman...")
 
-if filme and len >= 2:
+if filme and len(filme) >= 2:
     try:
         sugerir = requests.get(f"{API_URL}/sugerir?filme={filme}").json()
     except:
