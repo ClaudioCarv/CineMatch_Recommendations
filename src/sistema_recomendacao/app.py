@@ -15,7 +15,6 @@ if "filme_selecionado" not in st.session_state:
 
 filme = st.text_input(
     'Digite aqui o filme: ',
-    value=st.session_state.filme_selecionado,
     key="input_filme"
 )
 
