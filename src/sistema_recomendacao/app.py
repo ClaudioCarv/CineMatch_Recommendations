@@ -9,16 +9,31 @@ API_URL = os.getenv('API_URL')
 
 
 
-filme = st.text_input('Digite aqui um filme:', placeholder="Ex: Avengers, Batman...")
+if "filme_input" not in st.session_state:
+    st.session_state.filme_input = ""
+
+filme = st.text_input(
+    'Digite aqui o filme: ',
+    value=st.session_state.filme_input,
+    key="input_filme"
+)
+
+sugerir = []
+
 
 if filme and len(filme) >= 2:
     try:
-        sugerir = requests.get(f"{API_URL}/sugerir?filme={filme}").json()
+        resposta = requests.get(f"{API_URL}/sugerir?filme={filme}").json()
+        sugerir = resposta.json()
     except:
         sugerir = []
 
     if sugerir:
-        filme = st.selectbox('Sugestões: ', sugerir)
+        st.write('Sugestões: ')
+        for sug in sugerir:
+            if st.button(sug):
+                st.session_state.filme_input = sug
+                st.rerun()
 
 
 if st.button('Recomendar'):
