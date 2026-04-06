@@ -10,5 +10,5 @@ def recomendar_api(filme: str):
 
 
 @app.get('/sugestoes')
-def sugerir_api(filme:str):
+def sugerir_api(filme: str):
     return sugerir(filme)
