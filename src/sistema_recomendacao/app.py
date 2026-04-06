@@ -56,7 +56,7 @@ if st.button('Recomendar'):
                 st.info("💡 Dica: tente nomes em inglês ou mais curtos")
                 st.stop()
 
-        st.success(f"Filme base: {dados['base']}")
+        st.success(f"Filmes encontrados")
         st.subheader('Filmes recomendados')
         
         for item in dados['recomendacoes']:
