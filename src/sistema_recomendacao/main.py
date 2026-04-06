@@ -7,7 +7,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 #buscar o filme digitado e ver se tem ou não na lista
 
 def recomendar(filme):
+    filme = filme[:50]
     filtro = df[df['original_title'].str.contains(filme, case=False, na=False)].head(1)
+    if not isinstance(filme, str) or len(filme) < 2:
+        return {"erro": "Digite um nome válido"}
     if filtro.empty:
         return {"erro": "Filme não encontrado. Tente outro nome."}
     else:
@@ -23,8 +26,15 @@ def recomendar(filme):
                 'score': round(valor, 2)
             })
         return {
+            'base': filme_base,
             'recomendacoes': resultados
         }
+
+def sugerir_texto(texto):
+    filtro = df[df[df['original_title'].str.contains(texto, case=False, na=False)]]
+    resultados = filtro['original_title'].head(5).tolist()
+
+    return resultados
 
 
 

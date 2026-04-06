@@ -1,12 +1,23 @@
 import streamlit as st
 import requests
-
+import os
 
 st.title('Sistema de recomendação de filmes')
 st.sidebar.title("Sobre")
 st.sidebar.write("Sistema de recomendação usando TF-IDF e Similaridade")
-API_URL = "https://recomendacao-filmes-api.onrender.com"
+API_URL = os.getenv('API_URL')
+
+
+
 filme = st.text_input('Digite aqui um filme:', placeholder="Ex: Avengers, Batman...")
+
+if filme:
+    sugestoes = requests.get(f"{API_URL}/sugestoes?filme={filme}").json()
+
+    if sugestoes:
+        opcao = st.selectbox("Você quis dizer:", sugestoes)
+        filme = opcao
+
 
 if st.button('Recomendar'):
     if filme:
