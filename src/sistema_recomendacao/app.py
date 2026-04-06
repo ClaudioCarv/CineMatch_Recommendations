@@ -12,18 +12,21 @@ if st.button('Recomendar'):
     if filme:
         with st.spinner("Buscando recomendações..."):
             try:
-                resposta = requests.get(f'https://recomendacao-filmes-api.onrender.com/recomendacoes?filme={filme}')
+                resposta = requests.get(f'{API_URL}/recomendacoes?filme={filme}')
                 dados = resposta.json()
             except  requests.exceptions.RequestException:
                 st.error('Erro ao conectar com a API')
                 st.stop()
 
+            if not isinstance(dados, dict):
+                st.error("Resposta inválida da API")
+                st.stop()
         
 
-        if isinstance(dados, dict) and 'error' in dados:
-            st.warning(dados['erro'])
-            st.info("💡 Dica: tente nomes em inglês ou mais curtos")
-            st.stop()
+            if isinstance(dados, dict) and 'erro' in dados:
+                st.warning(['erro'])
+                st.info("💡 Dica: tente nomes em inglês ou mais curtos")
+                st.stop()
 
         st.success(f"Filme base: {dados['base']}")
         st.subheader('Filmes recomendados')

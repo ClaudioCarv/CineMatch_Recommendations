@@ -23,7 +23,6 @@ def recomendar(filme):
                 'score': round(valor, 2)
             })
         return {
-            'base': filme_base,
             'recomendacoes': resultados
         }
 
