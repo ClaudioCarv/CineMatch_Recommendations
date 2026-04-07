@@ -1,7 +1,30 @@
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
+import os
+import requests
 
+
+API_KEY_TMD = os.getenv('API_TMD')
+
+
+def buscar_poster(titulo):
+    url = f'https://api.themoviedb.org/3/movie'
+    params = {
+        "api_key": API_KEY_TMD,
+        "query": titulo,
+        "language": "pt-BR"
+    }
+    resposta = requests.get(url, params=params).json()
+
+    if resposta['results']:
+        filme = resposta['results'][0]
+        poster_path = filme.get('poster_path')
+
+        if poster_path:
+            return f"https://image.tmdb.org/t/p/w500{poster_path}"
+    
+    return None
 
 
 #buscar o filme digitado e ver se tem ou não na lista

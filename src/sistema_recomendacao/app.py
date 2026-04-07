@@ -1,11 +1,15 @@
 import streamlit as st
 import requests
 import os
+from src.sistema_recomendacao.main import buscar_poster
+
 
 st.title('Sistema de recomendação de filmes')
 st.sidebar.title("Sobre")
 st.sidebar.write("Sistema de recomendação usando TF-IDF e Similaridade")
 API_URL = os.getenv('API_URL')
+
+
 
 if "filme_escolhido" not in st.session_state:
     st.session_state.filme_escolhido = ""
@@ -36,50 +40,58 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
 
 filme_busca = st.session_state.filme_escolhido or filme
 
-st.markdown("""
-    <style>
-    div.stButton > button {
-        background-color: #0068C9;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: bold;
-    }
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
 
-    div.stButton > button:hover {
-        background-color: #0051a0;
-        color: white;
-    }
-    </style>
-""", unsafe_allow_html=True)
+    st.markdown("""
+        <style>
+        div.stButton > button {
+            background-color: #0068C9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
 
-if st.button('Recomendar'):
-    if filme_busca:
-        with st.spinner("Buscando recomendações..."):
-            try:
-                resposta = requests.get(f'{API_URL}/recomendacoes?filme={filme_busca}')
-                dados = resposta.json()
-            except requests.exceptions.RequestException:
-                st.error('Erro ao conectar com a API')
-                st.stop()
+        div.stButton > button:hover {
+            background-color: #0051a0;
+            color: white;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
-            if not isinstance(dados, dict):
-                st.error("Resposta inválida da API")
-                st.stop()
+    if st.button('Recomendar'):
+        if filme_busca:
+            with st.spinner("Buscando recomendações..."):
+                try:
+                    resposta = requests.get(f'{API_URL}/recomendacoes?filme={filme_busca}')
+                    dados = resposta.json()
+                    poster_url = buscar_poster(filme_busca)
+                    if poster_url:
+                        st.image(poster_url, width=200)
+                    else:
+                        st.write("Pôster não encontrado")
+                except requests.exceptions.RequestException:
+                    st.error('Erro ao conectar com a API')
+                    st.stop()
 
-            if 'erro' in dados:
-                st.warning(dados['erro'])
-                st.info("💡 Dica: tente nomes em inglês ou mais curtos")
-                st.stop()
+                if not isinstance(dados, dict):
+                    st.error("Resposta inválida da API")
+                    st.stop()
 
-        st.success("Filmes encontrados")
-        st.subheader('Filmes recomendados')
+                if 'erro' in dados:
+                    st.warning(dados['erro'])
+                    st.info("💡 Dica: tente nomes em inglês ou mais curtos")
+                    st.stop()
 
-        for item in dados['recomendacoes']:
-            st.markdown(f"### 🎬 {item['titulo']}")
-            st.write(f"⭐ Score: {item['score']}")
-            st.progress(float(item['score']))
-    else:
-        st.warning('Digite um filme!')
+            st.success("Filmes encontrados")
+            st.subheader('Filmes recomendados')
+
+            for item in dados['recomendacoes']:
+                st.markdown(f"### 🎬 {item['titulo']}")
+                st.write(f"⭐ Score: {item['score']}")
+                st.progress(float(item['score']))
+        else:
+            st.warning('Digite um filme!')
