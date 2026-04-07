@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 import os
-from src.sistema_recomendacao.main import buscar_poster
+from main import buscar_poster
 
 
 st.title('Sistema de recomendação de filmes')
