@@ -101,6 +101,8 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
 
                 st.rerun()
 
+
+
 #prioridade: fixado > digitado
 filme_busca = st.session_state.filme_fixado or st.session_state.filme_escolhido or filme
 
@@ -134,40 +136,24 @@ if st.session_state.recomendacoes:
     st.subheader('Filmes recomendados')
 
     for item in dados['recomendacoes']:
+        st.markdown("<div style='color:red'>teste</div>", unsafe_allow_html=True)
+        st.write(item['titulo'])
         info = buscar_info_filme(item['titulo'])
+        col_poster, col_info = st.columns([1, 3])
 
-        poster = info['poster'] if info and info['poster'] else "https://via.placeholder.com/150x220?text=Sem+Imagem"
-        ano = info['ano'] if info else ''
-        nota = f"{info['nota']:.1f}/10" if info else 'N/A'
-        
-        # 👇 limpa caracteres que quebram o HTML
-        sinopse = info['sinopse'] if info else 'Sem sinopse'
-        sinopse = (sinopse
-            .replace('&', '&amp;')
-            .replace('"', '&quot;')
-            .replace("'", '&#39;')
-            .replace('<', '&lt;')
-            .replace('>', '&gt;')
-        )
+        with col_poster:
+            if info and info['poster']:
+                st.image(info['poster'], width=150)
+            else:
+                st.write("🎬 Sem imagem")
 
-        st.markdown(f"""
-            <div style="display:flex; gap:20px; padding:16px; border-radius:12px; 
-                        background-color:#1e1e1e; margin-bottom:16px;">
-                
-                <img src="{poster}" 
-                    style="width:150px; height:220px; object-fit:cover; 
-                            border-radius:8px; flex-shrink:0;">
-                
-                <div style="flex:1;">
-                    <h3 style="margin:0 0 8px 0;">🎬 {item['titulo']}</h3>
-                    <p style="margin:4px 0;">📅 {ano}</p>
-                    <p style="margin:4px 0;">⭐ Nota TMDB: {nota}</p>
-                    <p style="margin:8px 0; font-size:14px; color:#aaa;">{sinopse}</p>
-                    <p style="margin:4px 0;">🎯 Score de similaridade: {item['score']}</p>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-        st.progress(float(item['score']))
-
-    st.divider()
+        with col_info:
+            st.markdown(f"### 🎬 {item['titulo']}")
+            
+            if info:
+                st.write(f"📅 {info['ano']}")
+                st.write(f"⭐ Nota TMDB: {info['nota']:.1f}/10")
+                st.write(f"📖 {info['sinopse']}")
+                st.write(f"🎯 Score de similaridade: {item['score']}")
+                st.progress(float(item['score']))
+        st.divider()
