@@ -5,7 +5,7 @@ import os
 import requests
 
 
-API_KEY_TMD = os.getenv('API_TMD')
+API_KEY_TMD = os.getenv('API_KEY_TMD')
 
 
 def buscar_poster(titulo):
