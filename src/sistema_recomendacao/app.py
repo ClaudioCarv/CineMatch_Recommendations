@@ -63,6 +63,8 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
                     #clicou no fixado desmarca
                     st.session_state.filme_fixado = None
                     st.session_state.recomendacoes = None
+                    st.session_state.filme_escolhido = ""  # 👈 limpa o filme escolhido também
+                    st.rerun()
                 else:
                     #clicou numa sugestão fixa e ja busca recomendações
                     st.session_state.filme_fixado = sug
