@@ -18,29 +18,16 @@ if "filme_fixado" not in st.session_state:
 if "recomendacoes" not in st.session_state:
     st.session_state.recomendacoes = None 
 
-st.markdown("""
-    <style>
-    div.stButton > button {
-        background-color: #0068C9;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: bold;
-    }
-    div.stButton > button:hover {
-        background-color: #0051a0;
-        color: white;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 filme = st.text_input(
     'Digite aqui o filme: ',
     value=st.session_state.filme_escolhido,
     key="input_filme"
 )
+#mostra o filme fixado
+if st.session_state.filme_fixado:
+    st.info(f"📌 Filme fixado: **{st.session_state.filme_fixado}**")
+
 
 sugestoes = []
 
@@ -52,7 +39,25 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
         sugestoes = []
 
     if sugestoes:
+        st.markdown("""
+            <style>
+            div.stButton > button {
+                background-color: #FFC300;
+                color: black;
+                border: none;
+                border-radius: 8px;
+                padding: 6px 14px;
+                font-size: 13px;
+            }
+            div.stButton > button:hover {
+                background-color: #e0a800;
+                color: black;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
         st.markdown("### 🔍 Sugestões")
+        
 
         for sug in sugestoes:
             #mostra se estiver fixado
@@ -78,13 +83,23 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
 
                 st.rerun()
 
-#mostra o filme fixado
-if st.session_state.filme_fixado:
-    st.info(f"📌 Filme fixado: **{st.session_state.filme_fixado}**")
+
 
 #prioridade: fixado > digitado
 filme_busca = st.session_state.filme_fixado or st.session_state.filme_escolhido or filme
 
+st.markdown("""
+    <style>
+    div.stButton > button {
+        background-color: #0068C9;
+        color: white;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    </style>
+""", unsafe_allow_html=True)
 if st.button('Recomendar'):
     if filme_busca:
         with st.spinner("Buscando recomendações..."):
