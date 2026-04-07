@@ -36,6 +36,25 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
 
 filme_busca = st.session_state.filme_escolhido or filme
 
+st.markdown("""
+    <style>
+    div.stButton > button {
+        background-color: #0068C9;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    div.stButton > button:hover {
+        background-color: #0051a0;
+        color: white;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 if st.button('Recomendar'):
     if filme_busca:
         with st.spinner("Buscando recomendações..."):
