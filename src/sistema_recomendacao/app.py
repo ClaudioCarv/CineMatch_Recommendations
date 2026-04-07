@@ -26,6 +26,10 @@ st.markdown("""
         background-color: #0068C9 !important;
         color: white !important;
     }
+    div.stButton > button:hover[kind="primary"] {
+        background-color: #56ff39 !important;
+        color: white !important;
+    }
 
     /* todos os botões por padrão — sugestões */
     div.stButton > button {
@@ -52,6 +56,12 @@ filme = st.text_input(
 #mostra o filme fixado
 if st.session_state.filme_fixado:
     st.info(f"📌 Filme fixado: **{st.session_state.filme_fixado}**")
+
+    if st.button("❌ Desafixar", type="primary"): 
+        st.session_state.filme_fixado = None
+        st.session_state.recomendacoes = None
+        st.session_state.filme_escolhido = ""
+        st.rerun()
 
 
 sugestoes = []
