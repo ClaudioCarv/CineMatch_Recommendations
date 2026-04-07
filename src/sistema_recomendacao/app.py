@@ -101,8 +101,6 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
 
                 st.rerun()
 
-
-
 #prioridade: fixado > digitado
 filme_busca = st.session_state.filme_fixado or st.session_state.filme_escolhido or filme
 
@@ -141,7 +139,16 @@ if st.session_state.recomendacoes:
         poster = info['poster'] if info and info['poster'] else "https://via.placeholder.com/150x220?text=Sem+Imagem"
         ano = info['ano'] if info else ''
         nota = f"{info['nota']:.1f}/10" if info else 'N/A'
+        
+        # 👇 limpa caracteres que quebram o HTML
         sinopse = info['sinopse'] if info else 'Sem sinopse'
+        sinopse = (sinopse
+            .replace('&', '&amp;')
+            .replace('"', '&quot;')
+            .replace("'", '&#39;')
+            .replace('<', '&lt;')
+            .replace('>', '&gt;')
+        )
 
         st.markdown(f"""
             <div style="display:flex; gap:20px; padding:16px; border-radius:12px; 
@@ -160,7 +167,7 @@ if st.session_state.recomendacoes:
                 </div>
             </div>
         """, unsafe_allow_html=True)
-        
+
         st.progress(float(item['score']))
 
     st.divider()
