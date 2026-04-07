@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 import os
-from main import buscar_info_filme
+from src.sistema_recomendacao.main import buscar_info_filme
 
 st.title('Sistema de recomendação de filmes')
 st.sidebar.title("Sobre")
