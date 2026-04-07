@@ -8,23 +8,32 @@ import requests
 API_KEY_TMD = os.getenv('API_KEY_TMD')
 
 
-def buscar_poster(titulo):
-    url = f'https://api.themoviedb.org/3/search/movie'
+def buscar_info_filme(titulo):
+    url = 'https://api.themoviedb.org/3/search/movie'
     params = {
         "api_key": API_KEY_TMD,
         "query": titulo,
         "language": "pt-BR"
     }
-    resposta = requests.get(url, params=params).json()
+    
+    try:
+        resposta = requests.get(url, params=params).json()
 
-    if resposta['results']:
+        if 'results' not in resposta or not resposta['results']:
+            return None
+
         filme = resposta['results'][0]
         poster_path = filme.get('poster_path')
 
-        if poster_path:
-            return f"https://image.tmdb.org/t/p/w500{poster_path}"
-    
-    return None
+        return {
+            'poster': f"https://image.tmdb.org/t/p/w500{poster_path}" if poster_path else None,
+            'ano': filme.get('release_date', '')[:4],        
+            'generos': filme.get('genre_ids', []),            
+            'nota': filme.get('vote_average', 0),             
+            'sinopse': filme.get('overview', 'Sem sinopse')   
+        }
+    except:
+        return None
 
 
 #buscar o filme digitado e ver se tem ou não na lista
@@ -58,6 +67,9 @@ def sugerir(texto):
     resultados = filtro['original_title'].head(5).tolist()
 
     return resultados
+
+
+
 
 
 

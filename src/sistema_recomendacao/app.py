@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 import os
-from main import buscar_poster
+from main import buscar_info_filme
 
 st.title('Sistema de recomendação de filmes')
 st.sidebar.title("Sobre")
@@ -17,6 +17,31 @@ if "filme_fixado" not in st.session_state:
 
 if "recomendacoes" not in st.session_state:
     st.session_state.recomendacoes = None 
+
+
+st.markdown("""
+    <style>
+    /* botão recomendar — selecionado pelo texto */
+    div.stButton > button[kind="primary"] {
+        background-color: #0068C9 !important;
+        color: white !important;
+    }
+
+    /* todos os botões por padrão — sugestões */
+    div.stButton > button {
+        background-color: #FFC300 !important;
+        color: black !important;
+        border: none !important;
+        border-radius: 8px !important;
+        font-weight: bold !important;
+    }
+
+    div.stButton > button:hover {
+        background-color: #e0a800 !important;
+        color: black !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 
 filme = st.text_input(
@@ -39,23 +64,6 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
         sugestoes = []
 
     if sugestoes:
-        st.markdown("""
-            <style>
-            div.stButton > button {
-                background-color: #FFC300;
-                color: black;
-                border: none;
-                border-radius: 8px;
-                padding: 6px 14px;
-                font-size: 13px;
-            }
-            div.stButton > button:hover {
-                background-color: #e0a800;
-                color: black;
-            }
-            </style>
-        """, unsafe_allow_html=True)
-
         st.markdown("### 🔍 Sugestões")
         
 
@@ -68,7 +76,7 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
                     #clicou no fixado desmarca
                     st.session_state.filme_fixado = None
                     st.session_state.recomendacoes = None
-                    st.session_state.filme_escolhido = ""  # 👈 limpa o filme escolhido também
+                    st.session_state.filme_escolhido = ""
                     st.rerun()
                 else:
                     #clicou numa sugestão fixa e ja busca recomendações
@@ -88,19 +96,8 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
 #prioridade: fixado > digitado
 filme_busca = st.session_state.filme_fixado or st.session_state.filme_escolhido or filme
 
-st.markdown("""
-    <style>
-    div.stButton > button {
-        background-color: #0068C9;
-        color: white;
-        border-radius: 8px;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: bold;
-    }
-    </style>
-""", unsafe_allow_html=True)
-if st.button('Recomendar'):
+
+if st.button('Recomendar', type="primary"):
     if filme_busca:
         with st.spinner("Buscando recomendações..."):
             try:
@@ -129,18 +126,22 @@ if st.session_state.recomendacoes:
     st.subheader('Filmes recomendados')
 
     for item in dados['recomendacoes']:
-        poster_url = buscar_poster(item['titulo'])
+        info = buscar_info_filme(item['titulo'])
         col_poster, col_info = st.columns([1, 3])
 
         with col_poster:
-            if poster_url:
-                st.image(poster_url, width=150)
+            if info and info['poster']:
+                st.image(info['poster'], width=150)
             else:
                 st.write("🎬 Sem imagem")
 
         with col_info:
             st.markdown(f"### 🎬 {item['titulo']}")
-            st.write(f"⭐ Score: {item['score']}")
-            st.progress(float(item['score']))
-
+            
+            if info:
+                st.write(f"📅 {info['ano']}")
+                st.write(f"⭐ Nota TMDB: {info['nota']:.1f}/10")
+                st.write(f"📖 {info['sinopse']}")
+                st.write(f"🎯 Score de similaridade: {item['score']}")
+                st.progress(float(item['score']))
         st.divider()
