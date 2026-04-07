@@ -152,16 +152,19 @@ if st.session_state.recomendacoes:
         titulo = item['titulo'].replace('"', '&quot;').replace("'", '&#39;')
 
         # 👇 monta o HTML numa variável ANTES do st.markdown
-        html = "<div style='display:flex; gap:20px; padding:16px; border-radius:12px; background-color:#1e1e1e; margin-bottom:16px;'>"
-        html += f"<img src='{poster}' style='width:150px; height:220px; object-fit:cover; border-radius:8px; flex-shrink:0;'>"
-        html += "<div style='flex:1;'>"
-        html += f"<h3>🎬 {titulo}</h3>"
-        html += f"<p>📅 {ano}</p>"
-        html += f"<p>⭐ Nota TMDB: {nota}</p>"
-        html += f"<p style='font-size:14px; color:#aaa;'>{sinopse}</p>"
-        html += f"<p>🎯 Score: {item['score']}</p>"
+        html = "<div style='display:flex; gap:20px; padding:16px; border-radius:12px; background-color:#1e1e1e; margin-bottom:16px; align-items:stretch;'>"
+        html += f"<img src='{poster}' style='width:200px; min-height:300px; object-fit:cover; border-radius:8px; flex-shrink:0; align-self:stretch;'>"
+        html += "<div style='flex:1; display:flex; flex-direction:column; gap:8px;'>"
+        html += f"<h3 style='margin:0;'>🎬 {titulo}</h3>"
+        html += f"<p style='margin:0;'>📅 {ano}</p>"
+        html += f"<p style='margin:0;'>⭐ Nota TMDB: {nota}</p>"
+        html += f"<p style='margin:0; font-size:14px; color:#aaa;'>{sinopse}</p>"
+        html += f"<p style='margin:0;'>🎯 Score: {item['score']}</p>"
+        html += f"<div style='background-color:#333; border-radius:8px; height:10px; width:100%;'>"
+        html += f"<div style='background-color:#0068C9; border-radius:8px; height:10px; width:{item['score']*100}%;'></div>"
+        html += "</div>"
         html += "</div></div>"
 
         st.markdown(html, unsafe_allow_html=True)
-        st.progress(float(item['score']))
+        
     st.divider()
