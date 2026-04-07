@@ -7,10 +7,8 @@ st.sidebar.title("Sobre")
 st.sidebar.write("Sistema de recomendação usando TF-IDF e Similaridade")
 API_URL = os.getenv('API_URL')
 
-
 if "filme_escolhido" not in st.session_state:
     st.session_state.filme_escolhido = ""
-
 
 filme = st.text_input(
     'Digite aqui o filme: ',
@@ -20,7 +18,8 @@ filme = st.text_input(
 
 sugestoes = []
 
-if filme and len(filme) >= 2:
+
+if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
     try:
         resposta = requests.get(f"{API_URL}/sugestoes?filme={filme}")
         sugestoes = resposta.json()
@@ -32,11 +31,10 @@ if filme and len(filme) >= 2:
 
         for sug in sugestoes:
             if st.button(sug, key=f"sug_{sug}"):
-                st.session_state.filme_escolhido = sug  
-                del st.session_state["input_filme"]     
-                st.rerun()
+                st.session_state.filme_escolhido = sug
+                st.rerun()                              
 
-filme_busca = filme or st.session_state.filme_escolhido
+filme_busca = st.session_state.filme_escolhido or filme
 
 if st.button('Recomendar'):
     if filme_busca:
