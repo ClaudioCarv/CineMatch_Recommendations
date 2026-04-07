@@ -27,7 +27,7 @@ st.markdown("""
         color: white !important;
     }
     div.stButton > button:hover[kind="primary"] {
-        background-color: #56ff39 !important;
+        background-color: #0062bd !important;
         color: white !important;
     }
 
@@ -141,7 +141,10 @@ if st.session_state.recomendacoes:
 
         with col_poster:
             if info and info['poster']:
-                st.image(info['poster'], width=150)
+                st.markdown(f"""
+                    <img src="{info['poster']}" 
+                        style="width:150px; height:220px; object-fit:cover; border-radius:8px;">
+                """, unsafe_allow_html=True)
             else:
                 st.write("🎬 Sem imagem")
 
