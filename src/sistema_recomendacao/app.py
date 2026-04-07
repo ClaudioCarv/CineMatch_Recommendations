@@ -40,58 +40,68 @@ if filme and len(filme) >= 2 and filme != st.session_state.filme_escolhido:
 
 filme_busca = st.session_state.filme_escolhido or filme
 
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
 
-    st.markdown("""
-        <style>
-        div.stButton > button {
-            background-color: #0068C9;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-        }
 
-        div.stButton > button:hover {
-            background-color: #0051a0;
-            color: white;
-        }
-        </style>
-    """, unsafe_allow_html=True)
 
-    if st.button('Recomendar'):
-        if filme_busca:
-            with st.spinner("Buscando recomendações..."):
-                try:
-                    resposta = requests.get(f'{API_URL}/recomendacoes?filme={filme_busca}')
-                    dados = resposta.json()
-                    poster_url = buscar_poster(filme_busca)
-                    if poster_url:
-                        st.image(poster_url, width=200)
-                    else:
-                        st.write("Pôster não encontrado")
-                except requests.exceptions.RequestException:
-                    st.error('Erro ao conectar com a API')
-                    st.stop()
+st.markdown("""
+    <style>
+    div.stButton > button {
+        background-color: #0068C9;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+    }
 
-                if not isinstance(dados, dict):
-                    st.error("Resposta inválida da API")
-                    st.stop()
+    div.stButton > button:hover {
+        background-color: #0051a0;
+        color: white;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-                if 'erro' in dados:
-                    st.warning(dados['erro'])
-                    st.info("💡 Dica: tente nomes em inglês ou mais curtos")
-                    st.stop()
+if st.button('Recomendar'):
+    if filme_busca:
+        with st.spinner("Buscando recomendações..."):
+            try:
+                resposta = requests.get(f'{API_URL}/recomendacoes?filme={filme_busca}')
+                dados = resposta.json()
+                
+            except requests.exceptions.RequestException:
+                st.error('Erro ao conectar com a API')
+                st.stop()
 
-            st.success("Filmes encontrados")
-            st.subheader('Filmes recomendados')
+            if not isinstance(dados, dict):
+                st.error("Resposta inválida da API")
+                st.stop()
 
-            for item in dados['recomendacoes']:
+            if 'erro' in dados:
+                st.warning(dados['erro'])
+                st.info("💡 Dica: tente nomes em inglês ou mais curtos")
+                st.stop()
+
+        st.success("Filmes encontrados")
+        st.subheader('Filmes recomendados')
+
+        for item in dados['recomendacoes']:
+            st.markdown(f"### 🎬 {item['titulo']}")
+
+            poster_url = buscar_poster(item['titulo'])
+            col_poster, col_info = st.columns([1, 3])
+
+            with col_poster:
+                if poster_url:
+                    st.image(poster_url, width=150)
+                else:
+                    st.write("🎬 Sem imagem")
+    
+            with col_info:
                 st.markdown(f"### 🎬 {item['titulo']}")
                 st.write(f"⭐ Score: {item['score']}")
                 st.progress(float(item['score']))
-        else:
-            st.warning('Digite um filme!')
+            
+            st.divider()  
+    else:
+        st.warning('Digite um filme!')
