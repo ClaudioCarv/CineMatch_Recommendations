@@ -9,7 +9,7 @@ API_KEY_TMD = os.getenv('API_TMD')
 
 
 def buscar_poster(titulo):
-    url = f'https://api.themoviedb.org/3/movie'
+    url = f'https://api.themoviedb.org/3/search/movie'
     params = {
         "api_key": API_KEY_TMD,
         "query": titulo,
