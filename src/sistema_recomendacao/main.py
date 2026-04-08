@@ -36,8 +36,6 @@ def buscar_info_filme(titulo):
         return None
 
 
-#buscar o filme digitado e ver se tem ou não na lista
-
 def recomendar(filme):
     filme = filme[:50]
     filtro = df[df['original_title'].str.contains(filme, case=False, na=False)].head(1)
@@ -51,7 +49,7 @@ def recomendar(filme):
         sim = sorted(sim, key=lambda x: x[1], reverse=True)
         resultados = []
         filme_base = df['original_title'][indice]
-        for idx, valor in sim[1:6]:
+        for idx, valor in sim[1:11]:
             resultados.append({
                 'base': filme_base,
                 'titulo': df['original_title'][idx],
@@ -67,11 +65,6 @@ def sugerir(texto):
     resultados = filtro['original_title'].head(5).tolist()
 
     return resultados
-
-
-
-
-
 
 df = pd.read_csv('dataset/movies.csv')
 
