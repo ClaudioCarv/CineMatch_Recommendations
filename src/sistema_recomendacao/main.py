@@ -49,7 +49,7 @@ def recomendar(filme):
         sim = sorted(sim, key=lambda x: x[1], reverse=True)
         resultados = []
         filme_base = df['original_title'][indice]
-        for idx, valor in sim[1:11]:
+        for idx, valor in sim[1:21]:
             resultados.append({
                 'base': filme_base,
                 'titulo': df['original_title'][idx],
