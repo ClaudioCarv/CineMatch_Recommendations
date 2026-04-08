@@ -143,10 +143,12 @@ if st.session_state.recomendacoes:
     #paginação
     todos = dados['recomendacoes']
     por_pagina = 5
+    total_paginas = (len(todos) - 1) // por_pagina
     inicio = st.session_state.pagina * por_pagina
     fim = inicio + por_pagina
     pagina_atual = todos[inicio:fim]
-    total_paginas = (len(todos) - 1) // por_pagina
+    
+    st.write(f"Debug: total filmes={len(todos)}, total_paginas={total_paginas}, pagina_atual={st.session_state.pagina}")
 
 
     for item in pagina_atual:
