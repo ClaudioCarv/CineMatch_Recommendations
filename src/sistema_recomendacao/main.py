@@ -55,7 +55,6 @@ def recomendar(filme):
                 'titulo': df['original_title'][idx],
                 'score': round(valor, 2)
             })
-        print(f"Total retornado: {len(resultados)}") 
         return {
             'base': filme_base,
             'recomendacoes': resultados

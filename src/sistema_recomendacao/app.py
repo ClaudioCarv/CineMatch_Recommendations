@@ -147,8 +147,6 @@ if st.session_state.recomendacoes:
     inicio = st.session_state.pagina * por_pagina
     fim = inicio + por_pagina
     pagina_atual = todos[inicio:fim]
-    
-    st.write(f"Debug: total filmes={len(todos)}, total_paginas={total_paginas}, pagina_atual={st.session_state.pagina}")
 
 
     for item in pagina_atual:
@@ -189,7 +187,7 @@ if st.session_state.recomendacoes:
 
     with col_esq:
         if st.session_state.pagina > 0:
-            if st.button("⬅️ Anteriores", type="primary"):
+            if st.button("Anteriores", type="primary"):
                 st.session_state.pagina -= 1
                 st.rerun()
 
@@ -198,7 +196,7 @@ if st.session_state.recomendacoes:
 
     with col_dir:
         if st.session_state.pagina < total_paginas:
-            if st.button("Próximos ➡️", type="primary"):
+            if st.button("Próximos", type="primary"):
                 st.session_state.pagina += 1
                 st.rerun()
 
