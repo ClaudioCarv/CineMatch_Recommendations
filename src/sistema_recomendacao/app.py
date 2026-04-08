@@ -18,6 +18,9 @@ if "filme_fixado" not in st.session_state:
 if "recomendacoes" not in st.session_state:
     st.session_state.recomendacoes = None 
 
+if "pagina" not in st.session_state:
+    st.session_state.pagina = 0
+
 
 st.markdown("""
     <style>
@@ -109,9 +112,11 @@ filme_busca = st.session_state.filme_fixado or st.session_state.filme_escolhido 
 
 if st.button('Recomendar', type="primary"):
     if filme_busca:
+        st.session_state.pagina = 0
         with st.spinner("Buscando recomendações..."):
             try:
                 resposta = requests.get(f'{API_URL}/recomendacoes?filme={filme_busca}')
+                st.session_state.pagina = 0
                 st.session_state.recomendacoes = resposta.json()
             except requests.exceptions.RequestException:
                 st.error('Erro ao conectar com a API')
@@ -135,7 +140,18 @@ if st.session_state.recomendacoes:
     st.success("Filmes encontrados")
     st.subheader('Filmes recomendados')
 
-    for item in dados['recomendacoes']:
+    #paginação
+    todos = dados['recomendacoes']
+    por_pagina = 5
+    total_paginas = (len(todos) - 1) // por_pagina
+    inicio = st.session_state.pagina * por_pagina
+    fim = inicio + por_pagina
+    pagina_atual = todos[inicio:fim]
+    
+    st.write(f"Debug: total filmes={len(todos)}, total_paginas={total_paginas}, pagina_atual={st.session_state.pagina}")
+
+
+    for item in pagina_atual:
         info = buscar_info_filme(item['titulo'])
 
         poster = info['poster'] if info and info['poster'] else "https://via.placeholder.com/150x220?text=Sem+Imagem"
@@ -166,5 +182,25 @@ if st.session_state.recomendacoes:
         html += "</div></div>"
 
         st.markdown(html, unsafe_allow_html=True)
+
+            # 👇 navegação entre páginas
+    st.markdown("<br>", unsafe_allow_html=True)
+    col_esq, col_meio, col_dir = st.columns([1, 2, 1])
+
+    with col_esq:
+        if st.session_state.pagina > 0:
+            if st.button("⬅️ Anteriores", type="primary"):
+                st.session_state.pagina -= 1
+                st.rerun()
+
+    with col_meio:
+        st.markdown(f"<p style='text-align:center; color:#aaa;'>Página {st.session_state.pagina + 1} de {total_paginas + 1}</p>", unsafe_allow_html=True)
+
+    with col_dir:
+        if st.session_state.pagina < total_paginas:
+            if st.button("Próximos ➡️", type="primary"):
+                st.session_state.pagina += 1
+                st.rerun()
+
         
     st.divider()
