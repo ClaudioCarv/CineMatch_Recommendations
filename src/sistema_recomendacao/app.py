@@ -149,7 +149,7 @@ if st.session_state.recomendacoes:
     total_paginas = len(todos) // por_pagina
 
 
-    for item in dados['recomendacoes']:
+    for item in pagina_atual:
         info = buscar_info_filme(item['titulo'])
 
         poster = info['poster'] if info and info['poster'] else "https://via.placeholder.com/150x220?text=Sem+Imagem"
