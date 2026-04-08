@@ -146,7 +146,7 @@ if st.session_state.recomendacoes:
     inicio = st.session_state.pagina * por_pagina
     fim = inicio + por_pagina
     pagina_atual = todos[inicio:fim]
-    total_paginas = len(todos) // por_pagina
+    total_paginas = (len(todos) - 1) // por_pagina
 
 
     for item in pagina_atual:
