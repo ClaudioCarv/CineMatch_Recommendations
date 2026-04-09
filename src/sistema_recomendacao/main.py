@@ -67,8 +67,8 @@ def sugerir(texto):
     return resultados
 
 def aleatorio():
-    filme = df['original_title'].sample(1).iloc[0]
-    return {'titulo: filme'}
+    filme = df['original_title'].sample(1).value[0]
+    return {'titulo': str(filme)}
 
 
 
