@@ -73,12 +73,27 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
+#input filme
 filme = st.text_input(
     'Digite aqui o filme: ',
     value=st.session_state.filme_escolhido,
     key="input_filme"
 )
+
+#botão surpreenda-me
+if st.button("Surpreenda-me!"):
+    try:
+        resposta = requests.get(f"{API_URL}/aleatorio")
+        filme_aleatorio = resposta.json()['titulo']
+        st.session_state.filme_escolhido = filme_aleatorio
+        st.session_state.filme_fixado = filme_aleatorio
+        st.session_state.pagina = 0
+        resposta_rec = requests.get(f"{API_URL}/recomendacoes?filme={filme_aleatorio}")
+        st.session_state.recomendacoes = resposta_rec.json()
+        st.rerun()
+    except:
+        st.error("Erro ao buscar filme aleatório")
+
 #mostra o filme fixado
 if st.session_state.filme_fixado:
     st.info(f"📌 Filme fixado: **{st.session_state.filme_fixado}**")

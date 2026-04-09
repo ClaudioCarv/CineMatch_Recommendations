@@ -3,11 +3,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 import os
 import requests
-
+import random
 
 API_KEY_TMD = os.getenv('API_KEY_TMD')
 
-
+#buscar info filme (API TMDB)
 def buscar_info_filme(titulo):
     url = 'https://api.themoviedb.org/3/search/movie'
     params = {
@@ -35,7 +35,7 @@ def buscar_info_filme(titulo):
     except:
         return None
 
-
+#recomendar filmes do dataset
 def recomendar(filme):
     filme = filme[:50]
     filtro = df[df['original_title'].str.contains(filme, case=False, na=False)].head(1)
@@ -59,12 +59,18 @@ def recomendar(filme):
             'base': filme_base,
             'recomendacoes': resultados
         }
-
+#sugerir filmes
 def sugerir(texto):
     filtro = df[df['original_title'].str.contains(texto, case=False, na=False)]
     resultados = filtro['original_title'].head(5).tolist()
 
     return resultados
+
+def aleatorio():
+    filme = df['original_title'].sample(1).iloc[0]
+    return {'titulo: filme'}
+
+
 
 df = pd.read_csv('dataset/movies.csv')
 
