@@ -4,8 +4,31 @@ import os
 from main import buscar_info_filme
 
 st.title('Sistema de recomendação de filmes')
-st.sidebar.title("Sobre")
-st.sidebar.write("Sistema de recomendação usando TF-IDF e Similaridade")
+st.sidebar.title("🎬 Sistema de Recomendação")
+st.sidebar.markdown("---")
+st.sidebar.markdown("""
+### Como funciona?
+Digite o nome de um filme e o sistema encontra os mais similares usando **TF-IDF** e **Similaridade por Cosseno**.
+
+### Dicas de uso
+- Digite pelo menos 2 letras para ver sugestões
+- Clique numa sugestão para **fixar** o filme
+- Clique no filme fixado para **desmarcar**
+- Use nomes em **inglês** para melhores resultados
+
+### Tecnologias
+- Python
+- FastAPI
+- Streamlit
+- Scikit-learn
+- TMDB API
+
+### Dataset
++5000 filmes catalogados
+
+---
+Feito com Python
+""")
 API_URL = os.getenv('API_URL')
 
 # session_state
