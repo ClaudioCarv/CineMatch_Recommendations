@@ -12,13 +12,13 @@ Sistema de recomendação de filmes construído com **Python**, **FastAPI** e **
 
 ## Funcionalidades
 
-- 🔍 **Busca inteligente** com sugestões em tempo real enquanto você digita
-- 📌 **Filme fixado** — clique numa sugestão para fixar e recomendar com base nela
-- 🎬 **Recomendações** baseadas em gênero, sinopse e palavras-chave do filme
-- 🖼️ **Pôsteres** dos filmes via API do TMDB
-- 📅 **Informações extras** — ano de lançamento, nota do TMDB e sinopse
-- 📄 **Paginação** — navegue entre páginas de recomendações
-- 📊 **Barra de similaridade** — visualize o quão similar cada filme é
+- **Busca inteligente** com sugestões em tempo real enquanto você digita
+- **Filme fixado** — clique numa sugestão para fixar e recomendar com base nela
+- **Recomendações** baseadas em gênero, sinopse e palavras-chave do filme
+- **Pôsteres** dos filmes via API do TMDB
+- **Informações extras** — ano de lançamento, nota do TMDB e sinopse
+- **Paginação** — navegue entre páginas de recomendações
+- **Barra de similaridade** — visualize o quão similar cada filme é
 
 ---
 
@@ -90,7 +90,7 @@ Ao buscar um filme, o sistema encontra os filmes com maior similaridade e retorn
 
 ---
 
-## 🚀 Como rodar localmente
+## Como rodar localmente
 
 ### Pré-requisitos
 - Python 3.13+
@@ -163,7 +163,7 @@ streamlit run src/sistema_recomendacao/app.py
 }
 ```
 
-## 📊 Dataset
+## Dataset
 
 O dataset `movies.csv` contém informações de filmes como:
 
@@ -190,7 +190,7 @@ O dataset `movies.csv` contém informações de filmes como:
 
 ---
 
-## 📄 Licença
+## Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
