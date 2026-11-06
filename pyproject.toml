@@ -11,7 +11,8 @@ dependencies = [
     "scikit-learn (>=1.8.0,<2.0.0)",
     "fastapi (>=0.135.2,<0.136.0)",
     "uvicorn (>=0.42.0,<0.43.0)",
-    "streamlit (>=1.55.0,<2.0.0)"
+    "streamlit (>=1.55.0,<2.0.0)",
+    "matplotlib (>=3.10.9,<4.0.0)"
 ]
 
 [tool.poetry]
