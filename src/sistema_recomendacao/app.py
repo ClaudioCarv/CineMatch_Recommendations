@@ -612,7 +612,7 @@ if st.session_state.recomendacoes:
 
     with col_ant:
         if st.session_state.pagina > 0:
-            if st.button("⬅️ Anterior", type="secondary", use_container_width=True):
+            if st.button("Anterior", type="secondary", use_container_width=True):
                 st.session_state.pagina -= 1
                 st.rerun()
 
@@ -624,7 +624,7 @@ if st.session_state.recomendacoes:
 
     with col_prox:
         if st.session_state.pagina < total_paginas:
-            if st.button("Próximos ➡️", type="primary", use_container_width=True):
+            if st.button("Próximos", type="primary", use_container_width=True):
                 st.session_state.pagina += 1
                 st.rerun()
 
